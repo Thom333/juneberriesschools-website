@@ -13,7 +13,7 @@ export default function LoginPage(){
   const {data,error:sessionError}=await supabase.functions.invoke("staff-session");
   if(sessionError||data?.error){await supabase.auth.signOut();M(data?.error||sessionError?.message||"This account is not authorised.");B(false);return;}
   if(data?.profile?.role!=="super_administrator"){await supabase.auth.signOut();M("Your staff account is active, but this workspace is restricted to Super Administrators.");B(false);return;}
-  window.location.assign("/");
+  window.location.assign("/admin");
  };
  const reset=async()=>{if(!email){M("Enter your work email first.");return;}B(true);const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/auth/callback"});M(error?error.message:"If the account exists, a password reset email has been sent.");B(false);};
  return <main className="grid min-h-screen bg-[#f8f7fa] lg:grid-cols-[1.05fr_.95fr]">
