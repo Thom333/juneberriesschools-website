@@ -10,7 +10,8 @@ type Permission = { role:RoleKey; permission_key:string; enabled:boolean };
 type Audit = { id:string; action:string; created_at:string; metadata:Record<string,unknown>; target_user_id:string|null; actor_user_id:string|null };
 type ContentPage = {slug:string;title:string;body:string;status:"draft"|"published";updated_at:string};
 type Enquiry = {id:string;parent_name:string;email:string;phone:string;child_name:string|null;class_interest:string;message:string;status:string;created_at:string};
-type Programme = {id:string;title:string;language:string;description:string;status:"draft"|"published"};\ntype MediaAsset = {id:string;storage_path:string;file_name:string;alt_text:string;caption:string;category:"Learning"|"Creativity"|"Community";is_published:boolean;created_at:string};
+type Programme = {id:string;title:string;language:string;description:string;status:"draft"|"published"};
+type MediaAsset = {id:string;storage_path:string;file_name:string;alt_text:string;caption:string;category:"Learning"|"Creativity"|"Community";is_published:boolean;created_at:string};
 const roleLabels:Record<RoleKey,string>={super_administrator:"Super Administrator",school_administrator:"School Administrator",language_school_manager:"Language School Manager",content_editor:"Content Editor"};
 const statusLabels:Record<StatusKey,string>={active:"Active",invited:"Invited",suspended:"Suspended"};
 const nav=[{label:"Overview",icon:LayoutDashboard},{label:"Staff accounts",icon:Users},{label:"Role permissions",icon:ShieldCheck},{label:"Activity log",icon:Activity},{label:"Content & pages",icon:FileText},{label:"Media library",icon:ImageIcon},{label:"Admissions",icon:GraduationCap},{label:"Language school",icon:BookOpen},{label:"Settings",icon:Settings2}];
@@ -20,7 +21,8 @@ export default function DashboardClient({initialProfile}:{initialProfile:Profile
  const supabase=useMemo(()=>createClient(),[]);
  const [section,setSection]=useState("Overview"),[staff,setStaff]=useState<Profile[]>([]),[permissions,setPermissions]=useState<Permission[]>([]),[logs,setLogs]=useState<Audit[]>([]);
  const [search,setSearch]=useState(""),[filter,setFilter]=useState("all"),[invite,setInvite]=useState(false),[mobile,setMobile]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState("");
- const [pages,setPages]=useState<ContentPage[]>([]),[enquiries,setEnquiries]=useState<Enquiry[]>([]),[programmes,setProgrammes]=useState<Programme[]>([]),[media,setMedia]=useState<MediaAsset[]>([]);\n const [mediaFile,setMediaFile]=useState<File|null>(null),[mediaAlt,setMediaAlt]=useState(""),[mediaCaption,setMediaCaption]=useState(""),[mediaCategory,setMediaCategory]=useState<MediaAsset["category"]>("Learning");
+ const [pages,setPages]=useState<ContentPage[]>([]),[enquiries,setEnquiries]=useState<Enquiry[]>([]),[programmes,setProgrammes]=useState<Programme[]>([]),[media,setMedia]=useState<MediaAsset[]>([]);
+ const [mediaFile,setMediaFile]=useState<File|null>(null),[mediaAlt,setMediaAlt]=useState(""),[mediaCaption,setMediaCaption]=useState(""),[mediaCategory,setMediaCategory]=useState<MediaAsset["category"]>("Learning");
  const [contentSlug,setContentSlug]=useState(""),[contentTitle,setContentTitle]=useState(""),[contentBody,setContentBody]=useState(""),[programTitle,setProgramTitle]=useState(""),[programLanguage,setProgramLanguage]=useState(""),[programDescription,setProgramDescription]=useState("");
  const [name,setName]=useState(""),[email,setEmail]=useState(""),[role,setRole]=useState<RoleKey>("school_administrator"),[permissionRole,setPermissionRole]=useState<RoleKey>("school_administrator");
  const load=useCallback(async()=>{
@@ -36,11 +38,13 @@ export default function DashboardClient({initialProfile}:{initialProfile:Profile
   const extra = await Promise.all([
     supabase.from("site_content").select("slug,title,body,status,updated_at").order("updated_at",{ascending:false}),
     supabase.from("admissions_enquiries").select("id,parent_name,email,phone,child_name,class_interest,message,status,created_at").order("created_at",{ascending:false}).limit(100),
-    supabase.from("language_programmes").select("id,title,language,description,status").order("created_at",{ascending:false}),\n    supabase.from("media_assets").select("id,storage_path,file_name,alt_text,caption,category,is_published,created_at").order("created_at",{ascending:false})
+    supabase.from("language_programmes").select("id,title,language,description,status").order("created_at",{ascending:false}),
+    supabase.from("media_assets").select("id,storage_path,file_name,alt_text,caption,category,is_published,created_at").order("created_at",{ascending:false})
   ]);
   if(!extra[0].error)setPages((extra[0].data||[]) as ContentPage[]);
   if(!extra[1].error)setEnquiries((extra[1].data||[]) as Enquiry[]);
-  if(!extra[2].error)setProgrammes((extra[2].data||[]) as Programme[]);\n  if(!extra[3].error)setMedia((extra[3].data||[]) as MediaAsset[]);
+  if(!extra[2].error)setProgrammes((extra[2].data||[]) as Programme[]);
+  if(!extra[3].error)setMedia((extra[3].data||[]) as MediaAsset[]);
   setBusy(false);
  },[supabase]);
  useEffect(()=>{void load();},[load]);
