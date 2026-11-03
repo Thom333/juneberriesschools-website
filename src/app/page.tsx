@@ -1,7 +1,6 @@
 "use client";
 
-import Link from "next/link";
-import { ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, GraduationCap, Globe2, Heart, Menu, ShieldCheck, Sparkles, Users, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, GraduationCap, Globe2, Heart, Menu, ShieldCheck, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 
 const levels=[{no:"01",title:"Early Years",desc:"A joyful beginning built on curiosity, care and confidence.",detail:"Nursery & Kindergarten",tone:"bg-[#f8e9dc]",symbol:"✿"},{no:"02",title:"Primary School",desc:"Strong foundations, active discovery and a love of learning.",detail:"Primary Education",tone:"bg-[#e8eef9]",symbol:"✳"},{no:"03",title:"Secondary School",desc:"Academic depth, character and the confidence to shape tomorrow.",detail:"Junior & Senior Secondary",tone:"bg-[#e9f1e8]",symbol:"✦"}];
