@@ -15,19 +15,13 @@ export default function ResetPasswordPage() {
     const run = async () => {
       const supabase = createClient();
       const url = new URL(window.location.href);
-      const code = url.searchParams.get("code");
-      const tokenHash = url.searchParams.get("token_hash");
-      const type = url.searchParams.get("type");
       try {
-        if (code) {
-          const { error } = await supabase.auth.exchangeCodeForSession(code);
-          if (error) throw error;
-        } else if (tokenHash && type === "recovery") {
-          const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: "recovery" });
-          if (error) throw error;
-        } else {
-          const { data } = await supabase.auth.getSession();
-          if (!data.session) throw new Error("This recovery link is missing or has expired. Request a new password reset email.");
+        const { data, error } = await supabase.auth.getUser();
+        if (url.searchParams.has("error")) {
+          throw new Error(url.searchParams.get("error") || "The recovery link could not be verified.");
+        }
+        if (error || !data.user) {
+          throw new Error("The recovery session is missing or has expired. Request a new password reset email.");
         }
         window.history.replaceState({}, document.title, "/auth/reset-password");
         setMessage("Choose a new password for your Juneberries staff account.");
