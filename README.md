@@ -37,3 +37,5 @@ The Supabase backend foundation is deployed to project reference `bnlewrojzfflmh
 Never put a Supabase service-role key in frontend environment variables or browser code. Only the publishable/anon key belongs in the client. Privileged operations must remain server-side.
 
 The initial Super Administrator must be provisioned through the controlled bootstrap process; invitations must never grant the Super Administrator role.
+
+Frontend validation runs on pushes and pull requests to `main`. The workflow installs dependencies with npm and runs the production build.
