@@ -26,10 +26,5 @@ export async function updateSession(request: NextRequest) {
     target.pathname = "/login";
     return NextResponse.redirect(target);
   }
-  if (data?.claims && pathname === "/login") {
-    const target = request.nextUrl.clone();
-    target.pathname = "/";
-    return NextResponse.redirect(target);
-  }
   return response;
 }
