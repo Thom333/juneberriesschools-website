@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Activity, BookOpen, CalendarDays, ChevronRight, FileText, GraduationCap, Image as ImageIcon, LayoutDashboard, LockKeyhole, LogOut, Mail, Menu, Plus, Search, Settings2, Shield, ShieldCheck, UserCheck, Users, Upload, Trash2, X } from "lucide-react";
+import { Activity, BookOpen, CalendarDays, ChevronRight, FileText, GraduationCap, Image as ImageIcon, LayoutDashboard, LockKeyhole, LogOut, Mail, Menu, Plus, Search, Save, Settings2, Shield, ShieldCheck, UserCheck, Users, Upload, Trash2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 type RoleKey = "super_administrator" | "school_administrator" | "language_school_manager" | "content_editor";
