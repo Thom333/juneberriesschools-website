@@ -9,9 +9,10 @@ export default async function Home() {
   const { data: { user }, error } = await supabase.auth.getUser();
   if (error || !user) redirect("/login");
   const { data: profile } = await supabase.from("staff_profiles").select("id,email,display_name,role,status").eq("id", user.id).maybeSingle();
-  if (!profile || profile.status !== "active") {
-    redirect("/login?error=unauthorised");
+  if (!profile || profile.status !== "active") redirect("/login?error=unauthorised");
+  if (profile.role !== "super_administrator") {
+    const { data: permission } = await supabase.from("role_permissions").select("enabled").eq("role", profile.role).eq("permission_key", "content.media.manage").maybeSingle();
+    if (!permission?.enabled) redirect("/login?error=role");
   }
-  if (profile.role !== "super_administrator") redirect("/login?error=role");
   return <DashboardClient initialProfile={profile} />;
 }
