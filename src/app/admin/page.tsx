@@ -10,7 +10,6 @@ export default async function Home() {
   if (error || !user) redirect("/login");
   const { data: profile } = await supabase.from("staff_profiles").select("id,email,display_name,role,status").eq("id", user.id).maybeSingle();
   if (!profile || profile.status !== "active") {
-    await supabase.auth.signOut();
     redirect("/login?error=unauthorised");
   }
   if (profile.role !== "super_administrator") redirect("/login?error=role");
