@@ -8,17 +8,17 @@ export default function LoginPage(){
  useEffect(()=>{const code=new URLSearchParams(window.location.search).get("error");if(code)Q(code);},[]);
  const withTimeout=<T,>(promise:Promise<T>,label:string)=>new Promise<T>((resolve,reject)=>{const timer=window.setTimeout(()=>reject(new Error(label+" timed out. Please check your connection and try again.")),15000);promise.then(value=>{window.clearTimeout(timer);resolve(value);},error=>{window.clearTimeout(timer);reject(error);});});
  const signIn=async(e:React.FormEvent)=>{e.preventDefault();B(true);M("");
+  let supabase:ReturnType<typeof createClient>|null=null;
   try{
-   const supabase=createClient();
+   supabase=createClient();
    const {error}=await withTimeout(supabase.auth.signInWithPassword({email:email.trim(),password}),"Sign-in");
    if(error)throw error;
    const {data,error:sessionError}=await withTimeout(supabase.functions.invoke("staff-session"),"Staff access verification");
-   if(sessionError||data?.error){await supabase.auth.signOut();throw new Error(data?.error||sessionError?.message||"This account is not authorised.");}
-   if(data?.profile?.role!=="super_administrator"){await supabase.auth.signOut();throw new Error("Your staff account is active, but this workspace is restricted to Super Administrators.");}
+   if(sessionError||data?.error)throw new Error(data?.error||sessionError?.message||"This account is not authorised.");
+   if(data?.profile?.role!=="super_administrator")throw new Error("Your staff account is active, but this workspace is restricted to Super Administrators.");
    window.location.assign("/admin");
   }catch(error){
-   const supabase=createClient();
-   await supabase.auth.signOut().catch(()=>undefined);
+   if(supabase) void supabase.auth.signOut().catch(()=>undefined);
    M(error instanceof Error?error.message:"Sign-in could not be completed. Please try again.");
   }finally{B(false);}
  };
