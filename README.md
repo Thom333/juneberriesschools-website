@@ -1,41 +1,44 @@
 # Juneberries Schools — Staff Administration
 
-A fresh responsive frontend for the Juneberries Schools Super Administrator workspace.
+Secure invitation-only staff administration workspace for Juneberries Schools.
 
 ## Stack
-- Next.js 15 App Router
-- React 19
-- TypeScript
-- Tailwind CSS
-- Lucide icons
+- Next.js 15 App Router, React 19, TypeScript and Tailwind CSS
+- Supabase Auth with cookie-based SSR sessions (@supabase/ssr)
+- Supabase Postgres with row-level security
+- Supabase Edge Functions: staff-session, invite-staff, manage-staff
 
-## Run locally
-```bash
-npm install
-npm run dev
-```
+## Local setup
+1. Install dependencies: npm install
+2. Copy .env.example to .env.local.
+3. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY from the Juneberries Supabase project.
+4. Run npm run dev and open /login.
 
-Open `/login` for the invitation-only staff sign-in interface and `/` for the administration dashboard.
+Only a publishable key is used in the browser. Never expose a Supabase service-role or secret key in a NEXT_PUBLIC_ variable or commit secrets to Git.
 
-## Current frontend scope
-- Responsive administrative dashboard
-- Staff directory, search and status filters
-- Staff invitation modal and approved role choices
-- Role permission matrix
-- Activity and audit-log presentation
-- Login screen with password visibility toggle
-- Juneberries purple, yellow and white visual identity
+## Current integrated scope
+- Real Supabase email/password sign-in and password reset
+- Cookie-backed SSR session refresh and protected dashboard route
+- Server-side staff profile/status/role verification
+- Live staff directory and account statistics
+- Staff invitation through the privileged invite-staff Edge Function
+- Suspend, reactivate and role-change actions through manage-staff
+- Live role-permission matrix and permission updates
+- Live staff audit activity
+- Four approved roles; invitation UI cannot grant Super Administrator
+- Responsive administration interface
 
-## Integration status
-This is currently a **frontend preview**. It uses illustrative sample records and local React state. No real invitation, sign-in, permission update, suspension or reactivation is performed from the browser yet.
+## Governance
+Only an active Super Administrator can enter the administration dashboard or perform staff-management operations. Database RLS policies allow staff to read their own profile, active staff to read role permissions, and Super Administrators to read the staff directory and audit log. Privileged writes are handled by authenticated Edge Functions.
 
-The Supabase backend foundation is deployed to project reference `bnlewrojzfflmhsories`. The next integration phase will add the browser-safe publishable key, Supabase Auth session handling, protected routes, and calls to the deployed Edge Functions:
-- `staff-session`
-- `invite-staff`
-- `manage-staff`
+The initial Super Administrator must be provisioned through the controlled bootstrap process. There is no public staff registration or self-service Super Administrator assignment.
 
-Never put a Supabase service-role key in frontend environment variables or browser code. Only the publishable/anon key belongs in the client. Privileged operations must remain server-side.
+## Remaining before production
+- Provision and test the first Super Administrator through the controlled bootstrap procedure.
+- Verify Supabase Auth redirect/URL configuration and invitation email templates.
+- Test real sign-in, invitation acceptance, role changes, suspension, reactivation and password reset.
+- Review Edge Function CORS allowlists and invitation acceptance safeguards.
+- Complete end-to-end and mobile browser tests.
+- Configure preview deployment environment variables; no production deployment is authorised.
 
-The initial Super Administrator must be provisioned through the controlled bootstrap process; invitations must never grant the Super Administrator role.
-
-Frontend validation runs on pushes and pull requests to `main`. The workflow installs dependencies with npm and runs the production build.
+The public-facing Juneberries homepage and navigation are a separate next build phase.
