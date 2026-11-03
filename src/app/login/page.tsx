@@ -6,14 +6,21 @@ import { createClient } from "@/lib/supabase/client";
 export default function LoginPage(){
  const [email,E]=useState(""),[password,P]=useState(""),[show,S]=useState(false),[message,M]=useState(""),[busy,B]=useState(false),[queryError,Q]=useState("");
  useEffect(()=>{const code=new URLSearchParams(window.location.search).get("error");if(code)Q(code);},[]);
+ const withTimeout=<T,>(promise:Promise<T>,label:string)=>new Promise<T>((resolve,reject)=>{const timer=window.setTimeout(()=>reject(new Error(label+" timed out. Please check your connection and try again.")),15000);promise.then(value=>{window.clearTimeout(timer);resolve(value);},error=>{window.clearTimeout(timer);reject(error);});});
  const signIn=async(e:React.FormEvent)=>{e.preventDefault();B(true);M("");
-  const supabase=createClient();
-  const {error}=await supabase.auth.signInWithPassword({email,password});
-  if(error){M(error.message);B(false);return;}
-  const {data,error:sessionError}=await supabase.functions.invoke("staff-session");
-  if(sessionError||data?.error){await supabase.auth.signOut();M(data?.error||sessionError?.message||"This account is not authorised.");B(false);return;}
-  if(data?.profile?.role!=="super_administrator"){await supabase.auth.signOut();M("Your staff account is active, but this workspace is restricted to Super Administrators.");B(false);return;}
-  window.location.assign("/admin");
+  try{
+   const supabase=createClient();
+   const {error}=await withTimeout(supabase.auth.signInWithPassword({email:email.trim(),password}),"Sign-in");
+   if(error)throw error;
+   const {data,error:sessionError}=await withTimeout(supabase.functions.invoke("staff-session"),"Staff access verification");
+   if(sessionError||data?.error){await supabase.auth.signOut();throw new Error(data?.error||sessionError?.message||"This account is not authorised.");}
+   if(data?.profile?.role!=="super_administrator"){await supabase.auth.signOut();throw new Error("Your staff account is active, but this workspace is restricted to Super Administrators.");}
+   window.location.assign("/admin");
+  }catch(error){
+   const supabase=createClient();
+   await supabase.auth.signOut().catch(()=>undefined);
+   M(error instanceof Error?error.message:"Sign-in could not be completed. Please try again.");
+  }finally{B(false);}
  };
  const reset=async()=>{if(!email){M("Enter your work email first.");return;}B(true);const supabase=createClient();const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+"/auth/callback"});M(error?error.message:"If the account exists, a password reset email has been sent.");B(false);};
  return <main className="grid min-h-screen bg-[#f8f7fa] lg:grid-cols-[1.05fr_.95fr]">
