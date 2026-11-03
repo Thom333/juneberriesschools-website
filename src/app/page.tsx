@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight, BookOpen, CheckCircle2, ChevronRight, GraduationCap, Globe2, Heart, Menu, ShieldCheck, Sparkles, Users, X } from "lucide-react";
 import { useState } from "react";
