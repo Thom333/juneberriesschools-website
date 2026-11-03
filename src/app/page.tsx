@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowRight, ArrowUpRight, BookOpen, ChevronRight, GraduationCap, Globe2, Heart, Menu, ShieldCheck, Sparkles, X } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, ChevronRight, GraduationCap, Globe2, Heart, Menu, ShieldCheck, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
