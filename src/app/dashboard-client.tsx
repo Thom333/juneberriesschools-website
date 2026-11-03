@@ -28,10 +28,7 @@ export default function DashboardClient({initialProfile}:{initialProfile:Profile
   const [s,p,a]=await Promise.all([
    supabase.from("staff_profiles").select("id,display_name,email,role,status,last_seen_at").order("created_at",{ascending:false}),
    supabase.from("role_permissions").select("role,permission_key,enabled").order("role").order("permission_key"),
-   supabase.from("staff_audit_logs").select("id,action,created_at,metadata,target_user_id,actor_user_id").order("created_at",{ascending:false}).limit(40),
-   supabase.from("site_content").select("slug,title,body,status,updated_at").order("updated_at",{ascending:false}),
-   supabase.from("admissions_enquiries").select("id,parent_name,email,phone,child_name,class_interest,message,status,created_at").order("created_at",{ascending:false}).limit(100),
-   supabase.from("language_programmes").select("id,title,language,description,status").order("created_at",{ascending:false})
+   supabase.from("staff_audit_logs").select("id,action,created_at,metadata,target_user_id,actor_user_id").order("created_at",{ascending:false}).limit(40)
   ]);
   if(s.error)setError(s.error.message);else setStaff((s.data||[]) as Profile[]);
   if(p.error)setError(p.error.message);else setPermissions((p.data||[]) as Permission[]);
