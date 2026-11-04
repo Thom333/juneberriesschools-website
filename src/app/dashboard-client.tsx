@@ -37,10 +37,10 @@ export default function DashboardClient({initialProfile}:{initialProfile:Profile
   ]);
   if(!extra[0].error){const drafts=!extra[1].error?(extra[1].data||[]) as {slug:string;title:string;body:string}[]:[];setPages(((extra[0].data||[]) as Omit<ContentPage,"draft_title"|"draft_body">[]).map(page=>{const draft=drafts.find(item=>item.slug===page.slug);return {...page,draft_title:draft?.title||null,draft_body:draft?.body||null};}));}else setError(extra[0].error.message);
   if(extra[1].error)setError(extra[1].error.message);
-  if(!extra[1].error)setEnquiries((extra[1].data||[]) as Enquiry[]);else setError(extra[1].error.message);
-  if(!extra[2].error)setProgrammes((extra[2].data||[]) as Programme[]);else setError(extra[2].error.message);
-  if(!extra[3].error)setMedia((extra[3].data||[]) as MediaAsset[]);else setError(extra[3].error.message);
-  if(!extra[4].error){const settings=(extra[4].data||[]) as {setting_key:string;setting_value:Record<string,string>}[];const saved=settings.find(x=>x.setting_key==="school_profile")?.setting_value||{};setSchoolSettings({...emptySchoolSettings,...saved});setHomepageContent(settings.find(x=>x.setting_key==="homepage_content")?.setting_value||{});setHomepageTheme({...defaultHomepageTheme,...(settings.find(x=>x.setting_key==="homepage_theme")?.setting_value||{})} as HomepageTheme);}else setError(extra[4].error.message);
+  if(!extra[2].error)setEnquiries((extra[2].data||[]) as Enquiry[]);else setError(extra[2].error.message);
+  if(!extra[3].error)setProgrammes((extra[3].data||[]) as Programme[]);else setError(extra[3].error.message);
+  if(!extra[4].error)setMedia((extra[4].data||[]) as MediaAsset[]);else setError(extra[4].error.message);
+  if(!extra[5].error){const settings=(extra[5].data||[]) as {setting_key:string;setting_value:Record<string,string>}[];const saved=settings.find(x=>x.setting_key==="school_profile")?.setting_value||{};setSchoolSettings({...emptySchoolSettings,...saved});setHomepageContent(settings.find(x=>x.setting_key==="homepage_content")?.setting_value||{});setHomepageTheme({...defaultHomepageTheme,...(settings.find(x=>x.setting_key==="homepage_theme")?.setting_value||{})} as HomepageTheme);}else setError(extra[5].error.message);
   setBusy(false);
  },[supabase]);
  useEffect(()=>{void load();},[load]);
