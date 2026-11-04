@@ -1,6 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
-import { Check, Palette, RefreshCw, Save, Sparkles } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Check, Save, Sparkles } from "lucide-react";
 
 export type HomepageTheme={id:string;name:string;description:string;primary:string;accent:string;background:string;surface:string;text:string;muted:string;displayFont:string;bodyFont:string;radius:number;spacing:number};
 export const presets:HomepageTheme[]=[
@@ -17,10 +17,10 @@ export default function ThemeStudio({initialTheme,onSave,busy}:{initialTheme:Hom
  const [themes,setThemes]=useState<HomepageTheme[]>(presets);
  const [selected,setSelected]=useState(initialTheme||presets[0]);
  const [generated,setGenerated]=useState(false);
+ useEffect(()=>setSelected(initialTheme||presets[0]),[initialTheme]);
  const active=selected;
  const update=(key:keyof HomepageTheme,value:string|number)=>setSelected(t=>({...t,[key]:value}));
  const generate=()=>{const batch=Array.from({length:4},(_,i)=>{const p=palettes[(themes.length+i+3)%palettes.length];return {id:"auto-"+Date.now()+"-"+i,name:["Scholar's Garden","Bright Horizons","Heritage Modern","Creative Campus"][i],description:"Auto-generated design variation. Edit every colour and typography setting before applying.",primary:p[0],accent:p[1],background:p[2],surface:p[3],text:p[4],muted:p[5],displayFont:fonts[(themes.length+i)%fonts.length],bodyFont:fonts[(themes.length+i+1)%fonts.length],radius:[12,18,26,32][i],spacing:[.96,1,1.08,1.14][i]};});setThemes(old=>[...old,...batch]);setSelected(batch[0]);setGenerated(true);};
- const swatches=[active.primary,active.accent,active.background,active.surface,active.text];
  return <div className="space-y-5">
   <section className="panel p-5 sm:p-6"><div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[#8052a0]">Website appearance</p><h2 className="mt-1 text-lg font-bold">Homepage themes & templates</h2><p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500">Choose a ready-made visual direction, customise its colours and typography, or generate fresh theme concepts. The active theme is applied to the public homepage after saving.</p></div><button type="button" onClick={generate} className="rounded-xl bg-[#542d80] px-4 py-3 text-xs font-semibold text-white"><Sparkles size={14} className="mr-2 inline"/>Generate themes</button></div>
    {generated&&<p className="mt-4 rounded-xl border border-purple-100 bg-purple-50 p-3 text-xs text-purple-900">Four new theme concepts generated. Select and customise a design, then save it to apply.</p>}
