@@ -31,9 +31,7 @@ function renderSection(section:DesignSection,index:number){
   const shadow=["none","0 8px 24px rgba(41,22,64,.08)","0 16px 40px rgba(41,22,64,.14)"].includes(section.shadow)?section.shadow:"none";
   const html=cleanHtml(typeof section.html==="string"?section.html:"");
   return <section key={section.id||index} style={{background,color,padding:padding+"px "+Math.min(padding,48)+"px",margin:margin+"px auto",border,borderRadius:radius+"px",maxWidth:width,textAlign:align as "left"|"center"|"right",fontSize:fontSize+"px",boxShadow:shadow}}>
-    <div style={{maxWidth:"100%",margin:"0 auto",display:columns>1?"grid":"block",gridTemplateColumns:columns>1?"repeat("+columns+",minmax(0,1fr))":undefined,gap:24}}>
-      <div dangerouslySetInnerHTML={{__html:html}}/>
-    </div>
+    <div className={columns>1?"page-design-columns":""} style={{maxWidth:"100%",margin:"0 auto",display:columns>1?"grid":"block",gridTemplateColumns:columns>1?"repeat("+columns+",minmax(0,1fr))":undefined,gap:24}} dangerouslySetInnerHTML={{__html:html}}/>
   </section>;
 }
 
