@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { BookOpen, CalendarDays, ChevronRight, FileText, GraduationCap, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Save, Settings2, ShieldCheck, Upload, Trash2, X } from "lucide-react";
+import { BookOpen, CalendarDays, ChevronRight, FileText, GraduationCap, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Save, Settings2, Shield, ShieldCheck, Upload, Trash2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import VisualPageBuilder from "./visual-page-builder";
 import ThemeStudio, { defaultHomepageTheme, type HomepageTheme } from "./theme-studio";
