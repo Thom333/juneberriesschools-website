@@ -3,26 +3,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { BookOpen, CalendarDays, ChevronRight, FileText, GraduationCap, Image as ImageIcon, LayoutDashboard, LogOut, Menu, Save, Settings2, ShieldCheck, Upload, Trash2, X } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
-type RoleKey = "super_administrator" | "school_administrator" | "language_school_manager" | "content_editor";
-type StatusKey = "active" | "invited" | "suspended";
-type Profile = { id:string; display_name:string|null; email:string; role:RoleKey; status:StatusKey; last_seen_at?:string|null };
-type Permission = { role:RoleKey; permission_key:string; enabled:boolean };
-type Audit = { id:string; action:string; created_at:string; metadata:Record<string,unknown>; target_user_id:string|null; actor_user_id:string|null };
+type Profile = { id:string; display_name:string|null; email:string; role:string; status:string };
 type ContentPage = {slug:string;title:string;body:string;status:"draft"|"published";updated_at:string};
 type Enquiry = {id:string;parent_name:string;email:string;phone:string;child_name:string|null;class_interest:string;message:string;status:string;created_at:string};
 type Programme = {id:string;title:string;language:string;description:string;status:"draft"|"published"};
 type MediaAsset = {id:string;storage_path:string;file_name:string;alt_text:string;caption:string;category:"Learning"|"Creativity"|"Community";is_published:boolean;created_at:string};
 type SchoolSettings = {school_name:string;motto:string;phone:string;alternate_phone:string;email:string;website:string;address:string;current_academic_year:string;current_term:string;term_start:string;term_end:string;holiday_start:string;holiday_end:string;facebook:string;instagram:string;youtube:string;linkedin:string;logo_url:string;favicon_url:string};
 const emptySchoolSettings:SchoolSettings={school_name:"",motto:"",phone:"",alternate_phone:"",email:"",website:"",address:"",current_academic_year:"",current_term:"",term_start:"",term_end:"",holiday_start:"",holiday_end:"",facebook:"",instagram:"",youtube:"",linkedin:"",logo_url:"",favicon_url:""};
-const roleLabels:Record<RoleKey,string>={super_administrator:"Super Administrator",school_administrator:"School Administrator",language_school_manager:"Language School Manager",content_editor:"Content Editor"};
-const statusLabels:Record<StatusKey,string>={active:"Active",invited:"Invited",suspended:"Suspended"};
 const nav=[{label:"Overview",icon:LayoutDashboard},{label:"Homepage editor",icon:FileText},{label:"Content & pages",icon:FileText},{label:"Media library",icon:ImageIcon},{label:"Admissions",icon:GraduationCap},{label:"Language school",icon:BookOpen},{label:"Settings",icon:Settings2}];
-const labelFor=(key:string)=>key.split(".").map(x=>x.replace(/_/g," ")).join(" · ").replace(/\b\w/g,c=>c.toUpperCase());
-const timeAgo=(value?:string|null)=>{if(!value)return "No sign-in yet";const diff=Math.max(0,Date.now()-new Date(value).getTime());const mins=Math.floor(diff/60000);if(mins<1)return "Just now";if(mins<60)return mins+" min ago";if(mins<1440)return Math.floor(mins/60)+" hours ago";return Math.floor(mins/1440)+" days ago";};
 export default function DashboardClient({initialProfile}:{initialProfile:Profile}) {
  const supabase=useMemo(()=>createClient(),[]);
  const [section,setSection]=useState("Overview");
- const [search,setSearch]=useState(""),[filter,setFilter]=useState("all"),[invite,setInvite]=useState(false),[mobile,setMobile]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState("");
+ const [mobile,setMobile]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState(""),[error,setError]=useState("");
  const [pages,setPages]=useState<ContentPage[]>([]),[enquiries,setEnquiries]=useState<Enquiry[]>([]),[programmes,setProgrammes]=useState<Programme[]>([]),[media,setMedia]=useState<MediaAsset[]>([]);
  const [schoolSettings,setSchoolSettings]=useState<SchoolSettings>(emptySchoolSettings);
  const [homepageContent,setHomepageContent]=useState<Record<string,string>>({});
