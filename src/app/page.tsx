@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { defaultHomepageTheme, type HomepageTheme } from "./theme-studio";
 
 const levels=[{no:"01",title:"Early Years",desc:"A joyful beginning built on curiosity, care and confidence.",detail:"Nursery & Kindergarten",tone:"bg-[#f8e9dc]",symbol:"✿"},{no:"02",title:"Primary School",desc:"Strong foundations, active discovery and a love of learning.",detail:"Primary Education",tone:"bg-[#e8eef9]",symbol:"✳"},{no:"03",title:"Secondary School",desc:"Academic depth, character and the confidence to shape tomorrow.",detail:"Junior & Senior Secondary",tone:"bg-[#e9f1e8]",symbol:"✦"}];
-const nav=[["About Us","/about"],["Executive Director’s Message","/our-school/executive-director-message"],["Our Team","/our-school/our-team"],["Vision & Mission","/our-school/vision-and-mission"],["Learning","/learning"],["Language School","/language-school"],["Gallery","/gallery"],["Admissions","/admissions"],["Contact","/#contact"]];
+const nav=[["About Us","/about"],["Executive Director’s Message","/pages/executive-director-message"],["Our Team","/pages/our-team"],["Vision & Mission","/pages/vision-and-mission"],["Learning","/learning"],["Language School","/language-school"],["Gallery","/gallery"],["Admissions","/admissions"],["Contact","/#contact"]];
 export default function HomePage(){
  const [menuOpen,setMenuOpen]=useState(false),[galleryFilter,setGalleryFilter]=useState("All"),[admissionsStep,setAdmissionsStep]=useState(0);
  const [publishedMedia,setPublishedMedia]=useState<{id:string;storage_path:string;alt_text:string;caption:string;category:"Learning"|"Creativity"|"Community"}[]>([]);
