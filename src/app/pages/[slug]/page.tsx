@@ -52,7 +52,24 @@ export default async function PublishedPage({params}:{params:Promise<{slug:strin
       <a href="/" className="font-serif text-lg font-bold tracking-wide text-[#2c1940]">JUNEBERRIES <span className="text-xs tracking-[.2em]">SCHOOLS</span></a>
       <a href="/#admissions" className="rounded-full bg-[#563477] px-5 py-3 text-xs font-bold text-white">Enquire now</a>
     </header>
-    <style>{".page-design-columns{display:grid;gap:24px}section[data-animation="fade"]{animation:softFade var(--motion-duration,450ms) both}section[data-animation="rise"]{animation:softRise var(--motion-duration,450ms) both}section[data-animation="zoom"]{animation:softZoom var(--motion-duration,450ms) both}section[data-hover="lift"]:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(35,20,50,.12)}section[data-hover="glow"]:hover{box-shadow:0 0 0 2px #f1c75b,0 12px 32px rgba(35,20,50,.1)}section[data-hover="scale"]:hover{transform:scale(1.015)}section[data-animation],section[data-hover]{transition:transform var(--motion-duration,450ms) ease,box-shadow var(--motion-duration,450ms) ease}@keyframes softFade{from{opacity:0}to{opacity:1}}@keyframes softRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}@keyframes softZoom{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){section[data-animation]{animation:none!important}section[data-hover]{transition:none!important}}@media(max-width:700px){.page-design-columns{grid-template-columns:1fr!important}}.page-design-columns>*{min-width:0} article img{max-width:100%;height:auto}"}</style><article className="mx-auto max-w-[1320px]">
+    <style>{`
+      .page-design-columns{display:grid;gap:24px}
+      section[data-animation="fade"]{animation:softFade var(--motion-duration,450ms) both}
+      section[data-animation="rise"]{animation:softRise var(--motion-duration,450ms) both}
+      section[data-animation="zoom"]{animation:softZoom var(--motion-duration,450ms) both}
+      section[data-hover="lift"]:hover{transform:translateY(-5px);box-shadow:0 16px 36px rgba(35,20,50,.12)}
+      section[data-hover="glow"]:hover{box-shadow:0 0 0 2px #f1c75b,0 12px 32px rgba(35,20,50,.1)}
+      section[data-hover="scale"]:hover{transform:scale(1.015)}
+      section[data-animation],section[data-hover]{transition:transform var(--motion-duration,450ms) ease,box-shadow var(--motion-duration,450ms) ease}
+      @keyframes softFade{from{opacity:0}to{opacity:1}}
+      @keyframes softRise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+      @keyframes softZoom{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+      @media(prefers-reduced-motion:reduce){section[data-animation]{animation:none!important}section[data-hover]{transition:none!important}}
+      @media(max-width:700px){.page-design-columns{grid-template-columns:1fr!important}}
+      .page-design-columns>*{min-width:0}
+      article img{max-width:100%;height:auto}
+    `}</style>
+    <article className="mx-auto max-w-[1320px]">
       <h1 className="sr-only">{data.title}</h1>
       {design?design.sections.map((section,index)=>renderSection(section,index)):<section className="mx-auto max-w-4xl rounded-2xl border border-[#eeeaf2] bg-white p-8 shadow-sm"><h1 className="font-serif text-4xl font-bold">{data.title}</h1><div className="mt-6 whitespace-pre-wrap text-base leading-8" dangerouslySetInnerHTML={{__html:cleanHtml(data.body)}}/></section>}
     </article>
