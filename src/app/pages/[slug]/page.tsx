@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +35,7 @@ function renderSection(section:DesignSection,index:number){
   const animation=["none","fade","rise","zoom"].includes(section.animation||"")?section.animation!:"none";
   const hover=["none","lift","glow","scale"].includes(section.hover||"")?section.hover!:"none";
   const duration=validNumber(section.transitionDuration||450,150,900,450);
-  return <section key={section.id||index} data-animation={animation} data-hover={hover} style={{"--motion-duration":duration+"ms",background,color,padding:padding+"px "+Math.min(padding,48)+"px",margin:margin+"px auto",border,borderRadius:radius+"px",maxWidth:width,textAlign:align as "left"|"center"|"right",fontSize:fontSize+"px",fontFamily,boxShadow:shadow}}>
+  return <section key={section.id||index} data-animation={animation} data-hover={hover} style={{"--motion-duration":duration+"ms",background,color,padding:padding+"px "+Math.min(padding,48)+"px",margin:margin+"px auto",border,borderRadius:radius+"px",maxWidth:width,textAlign:align as "left"|"center"|"right",fontSize:fontSize+"px",fontFamily,boxShadow:shadow} as CSSProperties}>
     <div className={columns>1?"page-design-columns":""} style={{maxWidth:"100%",margin:"0 auto",display:columns>1?"grid":"block",gridTemplateColumns:columns>1?"repeat("+columns+",minmax(0,1fr))":undefined,gap:24}} dangerouslySetInnerHTML={{__html:html}}/>
   </section>;
 }
