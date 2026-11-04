@@ -3,13 +3,14 @@ import { useMemo, useState } from "react";
 import { Check, Palette, RefreshCw, Save, Sparkles } from "lucide-react";
 
 export type HomepageTheme={id:string;name:string;description:string;primary:string;accent:string;background:string;surface:string;text:string;muted:string;displayFont:string;bodyFont:string;radius:number;spacing:number};
-const presets:HomepageTheme[]=[
+export const presets:HomepageTheme[]=[
 {id:"signature",name:"Juneberries Signature",description:"The approved premium, nurturing school identity.",primary:"#563477",accent:"#f1c75b",background:"#fbfaf7",surface:"#ffffff",text:"#2c1940",muted:"#716a72",displayFont:"Georgia, serif",bodyFont:"Arial, sans-serif",radius:24,spacing:1},
 {id:"garden",name:"Garden of Growth",description:"Fresh botanical greens with a warm, welcoming feel.",primary:"#496b55",accent:"#e4b96a",background:"#f6f7f0",surface:"#ffffff",text:"#263b30",muted:"#66766a",displayFont:"Georgia, serif",bodyFont:"Arial, sans-serif",radius:30,spacing:1.08},
 {id:"royal",name:"Royal Academy",description:"A confident, formal academic presentation.",primary:"#253c70",accent:"#d8b45c",background:"#f4f6fa",surface:"#ffffff",text:"#1e2b48",muted:"#647087",displayFont:"Georgia, serif",bodyFont:"Verdana, sans-serif",radius:14,spacing:1},
 {id:"terracotta",name:"Warm Editorial",description:"Soft clay, cream and editorial typography.",primary:"#925846",accent:"#d7a56e",background:"#faf5ef",surface:"#fffdf9",text:"#3c2c28",muted:"#796a62",displayFont:"Georgia, serif",bodyFont:"Arial, sans-serif",radius:12,spacing:1.12},
 {id:"future",name:"Future Ready",description:"A clean, modern and energetic digital-school look.",primary:"#315d70",accent:"#e5c45c",background:"#f2f7f8",surface:"#ffffff",text:"#183440",muted:"#61747b",displayFont:"Arial, sans-serif",bodyFont:"Arial, sans-serif",radius:20,spacing:1.04}
 ];
+export const defaultHomepageTheme=presets[0];
 const palettes=[["#563477","#f1c75b","#fbfaf7","#ffffff","#2c1940","#716a72"],["#496b55","#e4b96a","#f6f7f0","#ffffff","#263b30","#66766a"],["#253c70","#d8b45c","#f4f6fa","#ffffff","#1e2b48","#647087"],["#925846","#d7a56e","#faf5ef","#fffdf9","#3c2c28","#796a62"],["#315d70","#e5c45c","#f2f7f8","#ffffff","#183440","#61747b"],["#6d477a","#e5a8a0","#faf4f8","#ffffff","#38243f","#796a7e"],["#365c8d","#9fc6d5","#f2f7fb","#ffffff","#20364c","#63788b"],["#8b6533","#c8a85b","#fbf7ed","#ffffff","#42331f","#7a6d57"]];
 const fonts=["Georgia, serif","Arial, sans-serif","Verdana, sans-serif","Trebuchet MS, sans-serif","Times New Roman, serif"];
 export default function ThemeStudio({initialTheme,onSave,busy}:{initialTheme:HomepageTheme;onSave:(theme:HomepageTheme)=>Promise<void>;busy:boolean}){
