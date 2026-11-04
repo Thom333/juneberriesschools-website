@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
-type DesignSection = { id:string; html:string; background:string; color:string; padding:number; margin:number; border:string; radius:number; width:string; align:string; fontSize:number; columns:number; shadow:string };
+type DesignSection = { id:string; html:string; background:string; color:string; padding:number; margin:number; border:string; radius:number; width:string; align:string; fontSize:number; columns:number; shadow:string; fontFamily?:string };
 type DesignDocument = { version:number; description?:string; sections:DesignSection[] };
 
 function cleanHtml(input:string) {
@@ -24,13 +24,14 @@ function renderSection(section:DesignSection,index:number){
   const margin=validNumber(section.margin,0,100,0);
   const radius=validNumber(section.radius,0,60,18);
   const fontSize=validNumber(section.fontSize,12,32,16);
+  const fontFamily=["Arial, sans-serif","Georgia, serif","Verdana, sans-serif","Trebuchet MS, sans-serif","Times New Roman, serif"].includes(section.fontFamily||"")?section.fontFamily!:"Arial, sans-serif";
   const width=/^(100%|[0-9]{3,4}px)$/.test(section.width)?section.width:"1200px";
   const align=["left","center","right"].includes(section.align)?section.align:"left";
   const columns=[1,2,3].includes(section.columns)?section.columns:1;
   const border=["none","1px solid #eeeaf2","1px solid #d6c4e4","2px solid #563477","1px dashed #b9a4c9"].includes(section.border)?section.border:"1px solid #eeeaf2";
   const shadow=["none","0 8px 24px rgba(41,22,64,.08)","0 16px 40px rgba(41,22,64,.14)"].includes(section.shadow)?section.shadow:"none";
   const html=cleanHtml(typeof section.html==="string"?section.html:"");
-  return <section key={section.id||index} style={{background,color,padding:padding+"px "+Math.min(padding,48)+"px",margin:margin+"px auto",border,borderRadius:radius+"px",maxWidth:width,textAlign:align as "left"|"center"|"right",fontSize:fontSize+"px",boxShadow:shadow}}>
+  return <section key={section.id||index} style={{background,color,padding:padding+"px "+Math.min(padding,48)+"px",margin:margin+"px auto",border,borderRadius:radius+"px",maxWidth:width,textAlign:align as "left"|"center"|"right",fontSize:fontSize+"px",fontFamily,boxShadow:shadow}}>
     <div className={columns>1?"page-design-columns":""} style={{maxWidth:"100%",margin:"0 auto",display:columns>1?"grid":"block",gridTemplateColumns:columns>1?"repeat("+columns+",minmax(0,1fr))":undefined,gap:24}} dangerouslySetInnerHTML={{__html:html}}/>
   </section>;
 }
@@ -47,7 +48,7 @@ export default async function PublishedPage({params}:{params:Promise<{slug:strin
       <a href="/" className="font-serif text-lg font-bold tracking-wide text-[#2c1940]">JUNEBERRIES <span className="text-xs tracking-[.2em]">SCHOOLS</span></a>
       <a href="/#admissions" className="rounded-full bg-[#563477] px-5 py-3 text-xs font-bold text-white">Enquire now</a>
     </header>
-    <article className="mx-auto max-w-[1320px]">
+    <style>{".page-design-columns{display:grid;gap:24px}@media(max-width:700px){.page-design-columns{grid-template-columns:1fr!important}}.page-design-columns>*{min-width:0} article img{max-width:100%;height:auto}"}</style><article className="mx-auto max-w-[1320px]">
       <h1 className="sr-only">{data.title}</h1>
       {design?design.sections.map((section,index)=>renderSection(section,index)):<section className="mx-auto max-w-4xl rounded-2xl border border-[#eeeaf2] bg-white p-8 shadow-sm"><h1 className="font-serif text-4xl font-bold">{data.title}</h1><div className="mt-6 whitespace-pre-wrap text-base leading-8" dangerouslySetInnerHTML={{__html:cleanHtml(data.body)}}/></section>}
     </article>
