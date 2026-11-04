@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { createClient } from "@/lib/supabase/server";
 
@@ -49,8 +50,8 @@ export default async function PublishedPage({params}:{params:Promise<{slug:strin
   try{const parsed=JSON.parse(data.body);if(parsed?.version===1&&Array.isArray(parsed.sections))design=parsed as DesignDocument;}catch{}
   return <main className="min-h-screen bg-[#fbfaf7] px-4 py-8 text-[#30213b] sm:px-6">
     <header className="mx-auto mb-8 flex max-w-[1320px] items-center justify-between border-b border-[#eee9e1] pb-5">
-      <a href="/" className="font-serif text-lg font-bold tracking-wide text-[#2c1940]">JUNEBERRIES <span className="text-xs tracking-[.2em]">SCHOOLS</span></a>
-      <a href="/#admissions" className="rounded-full bg-[#563477] px-5 py-3 text-xs font-bold text-white">Enquire now</a>
+      <Link href="/" className="font-serif text-lg font-bold tracking-wide text-[#2c1940]">JUNEBERRIES <span className="text-xs tracking-[.2em]">SCHOOLS</span></Link>
+      <Link href="/#admissions" className="rounded-full bg-[#563477] px-5 py-3 text-xs font-bold text-white">Enquire now</Link>
     </header>
     <style>{`
       .page-design-columns{display:grid;gap:24px}
