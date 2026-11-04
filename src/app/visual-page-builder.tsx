@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import { AlignCenter, AlignLeft, AlignRight, Bold, ChevronDown, ChevronUp, Copy, Eye, ImagePlus, Italic, Link2, List, Plus, Save, Trash2, Underline } from "lucide-react";
+import { Bold, ChevronDown, ChevronUp, Copy, Eye, ImagePlus, Italic, Link2, List, Plus, Save, Trash2, Underline } from "lucide-react";
 
 type Section={id:string;kind:string;html:string;background:string;color:string;padding:number;margin:number;border:string;radius:number;width:string;align:string;fontSize:number;columns:number;shadow:string;fontFamily:string};
 type Page={slug:string;title:string;body:string;status:"draft"|"published";updated_at:string};
